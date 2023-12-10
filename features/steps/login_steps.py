@@ -1,12 +1,14 @@
 from behave import given, when, then
 from selenium.webdriver.common.by import By
 from datetime import datetime
+from features.pages.home_page import HomePage
 import random
 
 
 @given('user navigated to Login page')
 def login_page(context):
-    context.driver.find_element(By.XPATH, "//span[text()='My Account']").click()
+    home_pg = HomePage(context.driver)
+    home_pg.click_my_account()
     context.driver.find_element(By.LINK_TEXT, "Login").click()
 
 
