@@ -5,12 +5,18 @@ from datetime import datetime
 import random
 
 
-@given('user navigated to Login page')
-def login_page(context):
+def before_scenario(context):
     context.driver = webdriver.Chrome()
-    context.driver.implicitly_wait(10)
     context.driver.maximize_window()
     context.driver.get("https://tutorialsninja.com/demo/")
+
+
+def after_scenario(context):
+    context.driver.quit()
+
+
+@given('user navigated to Login page')
+def login_page(context):
     context.driver.find_element(By.XPATH, "//span[text()='My Account']").click()
     context.driver.find_element(By.LINK_TEXT, "Login").click()
 
@@ -29,7 +35,6 @@ def click_login(context):
 @then('user should get logged in')
 def successful_login(context):
     assert context.driver.find_element(By.LINK_TEXT, "Edit your account information").is_displayed()
-    context.driver.quit()
 
 
 @when('user entered invalid credentials')
@@ -46,7 +51,6 @@ def warning_message(context):
     expected_warning_message = "Warning: No match for E-Mail Address and/or Password."
     assert context.driver.find_element(By.XPATH, "//div[@id='account-login']/div[1]").\
         text.__contains__(expected_warning_message)
-    context.driver.quit()
 
 
 @when('user enter valid email and invalid password')
