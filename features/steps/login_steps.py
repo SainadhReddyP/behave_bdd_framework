@@ -2,30 +2,33 @@ from behave import given, when, then
 from selenium.webdriver.common.by import By
 from datetime import datetime
 from features.pages.home_page import HomePage
+from features.pages.login_page import LoginPage
+from features.pages.account_page import AccountPage
 import random
 
 
 @given('user navigated to Login page')
 def login_page(context):
-    home_pg = HomePage(context.driver)
-    home_pg.click_my_account()
-    context.driver.find_element(By.LINK_TEXT, "Login").click()
+    context.home_pg = HomePage(context.driver)
+    context.home_pg.click_my_account()
+    context.home_pg.select_login()
 
 
 @when('user entered valid credentials')
 def enter_valid_credentials(context):
-    context.driver.find_element(By.ID, "input-email").send_keys("sainadhreddy@gmail.com")
-    context.driver.find_element(By.ID, "input-password").send_keys("sainadh@123")
+    context.login_pg = LoginPage(context.driver)
+    context.login_pg.enter_credentials("sainadhreddy@gmail.com","sainadh@123")
 
 
 @when('clicks on Login button')
 def click_login(context):
-    context.driver.find_element(By.XPATH, "//input[@type='submit']").click()
+    context.login_pg.click_on_login_button()
 
 
 @then('user should get logged in')
 def successful_login(context):
-    assert context.driver.find_element(By.LINK_TEXT, "Edit your account information").is_displayed()
+    account_pg = AccountPage(context.driver)
+    assert account_pg.display_status_of_edit_your_account_information()
 
 
 @when('user entered invalid credentials')
