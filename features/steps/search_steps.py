@@ -1,14 +1,19 @@
 from behave import given, when, then
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
+
+
+def before_scenario(context):
+    context.driver = webdriver.Chrome()
+    context.driver.maximize_window()
+
+
+def after_scenario(context):
+    context.driver.quit()
 
 
 @given('user navigated to Home page')
 def home_page(context):
-    context.driver = webdriver.Chrome()
-    context.driver.implicitly_wait(10)
-    context.driver.maximize_window()
     context.driver.get("https://tutorialsninja.com/demo/")
 
 
@@ -25,7 +30,6 @@ def click_search(context):
 @then('valid product should get displayed in search results')
 def valid_search_result(context):
     assert context.driver.find_element(By.LINK_TEXT, "HP LP3065").is_displayed()
-    context.driver.quit()
 
 
 @when('user enter invalid product into the search box')
@@ -38,7 +42,6 @@ def message_invalid_search(context):
     expected_text = "There is no product that matches the search criteria."
     assert context.driver.find_element(By.XPATH, "//input[@id='button-search']/following-sibling::p")\
         .text.__eq__(expected_text)
-    context.driver.quit()
 
 
 @when('user dont enter anything into search box')
