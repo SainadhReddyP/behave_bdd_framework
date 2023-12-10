@@ -5,11 +5,18 @@ from datetime import datetime
 import random
 
 
-@given('user navigated to Register page')
-def launch_register_page(context):
+def before_scenario(context):
     context.driver = webdriver.Chrome()
     context.driver.maximize_window()
     context.driver.get("https://tutorialsninja.com/demo/")
+
+
+def after_scenario(context):
+    context.driver.quit()
+
+
+@given('user navigated to Register page')
+def launch_register_page(context):
     context.driver.find_element(By.XPATH, "//span[text()='My Account']").click()
     context.driver.find_element(By.LINK_TEXT, "Register").click()
 
@@ -37,7 +44,6 @@ def click_continue(context):
 def account_created(context):
     expected_result = "Your Account Has Been Created!"
     assert context.driver.find_element(By.XPATH, "//div[@id='content']/h1").text.__eq__(expected_result)
-    context.driver.quit()
 
 
 @when('user enter all fields')
@@ -77,7 +83,6 @@ def warning_duplicate_account(context):
     expected_warning = "Warning: E-Mail Address is already registered!"
     assert context.driver.find_element(By.XPATH, "//div[@id='account-register']/div[1]") \
         .text.__contains__(expected_warning)
-    context.driver.quit()
 
 
 @when('user dont enter anything into all fields')
@@ -118,4 +123,3 @@ def mandatory_fields_warning_message(context):
 
     assert context.driver.find_element(By.XPATH, "//input[@id='input-password']/following-sibling::div") \
         .text.__eq__(expected_password_warning)
-    context.driver.quit()
