@@ -19,7 +19,7 @@ Feature: Register account functionality
     And clicks on continue button
     Then proper warning message informing about duplicate account should be displayed
 
-  Scenario: Register with a duplicate email address
+  Scenario: Register without providing any details
     Given user navigated to Register page
     When user dont enter anything into all fields
     And clicks on continue button

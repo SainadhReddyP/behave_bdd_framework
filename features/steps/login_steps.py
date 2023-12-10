@@ -35,7 +35,7 @@ def successful_login(context):
 @when('user entered invalid credentials')
 def invalid_credentials(context):
     time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    invalid_email = "sainadhreddy_" + time_stamp + "_@gmail.com"
+    invalid_email = "sainadhreddy_" + time_stamp + "@gmail.com"
     context.driver.find_element(By.ID, "input-email").send_keys(invalid_email)
     invalid_password = ''.join(str(random.randint(0, 9)) for i in range(8))
     context.driver.find_element(By.ID, "input-password").send_keys(invalid_password)
