@@ -1,87 +1,87 @@
 from behave import given, when, then
 from selenium.webdriver.common.by import By
 from datetime import datetime
+from features.pages.home_page import HomePage
+from features.pages.register_page import RegisterPage
+from configurations.app_config import AppConfig
 import random
 
 
 @given('user navigated to Register page')
 def launch_register_page(context):
-    context.driver.find_element(By.XPATH, "//span[text()='My Account']").click()
-    context.driver.find_element(By.LINK_TEXT, "Register").click()
+    context.home_pg = HomePage(context.driver)
+    context.home_pg.click_my_account()
+    context.home_pg.select_register()
 
 
 @when('user enter mandatory fields')
 def enter_mandatory(context):
-    context.driver.find_element(By.ID, "input-firstname").send_keys("Sainadh")
-    context.driver.find_element(By.ID, "input-lastname").send_keys("Reddy")
-    time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    email_id = "sainadhreddy_" + time_stamp + "@gmail.com"
-    context.driver.find_element(By.ID, "input-email").send_keys(email_id)
-    telephone_number ='9' + ''.join(str(random.randint(0, 9)) for _ in range(9))
-    context.driver.find_element(By.ID, "input-telephone").send_keys(telephone_number)
-    context.driver.find_element(By.ID, "input-password").send_keys("123456")
-    context.driver.find_element(By.ID, "input-confirm").send_keys("123456")
-    context.driver.find_element(By.NAME, "agree").click()
+    context.register_pg = RegisterPage(context.driver)
+    context.register_pg.enter_first_name(AppConfig.first_name)
+    context.register_pg.enter_last_name(AppConfig.last_name)
+    context.register_pg.enter_email(AppConfig.random_email_id)
+    context.register_pg.enter_telephone(AppConfig.random_telephone_number)
+    context.register_pg.enter_password(AppConfig.password)
+    context.register_pg.enter_confirm_password(AppConfig.password)
+    context.register_pg.select_privacy_policy()
 
 
 @when('clicks on continue button')
 def click_continue(context):
-    context.driver.find_element(By.XPATH, "//input[@value='Continue']").click()
+    context.register_pg.clicks_on_continue_button()
 
 
 @then('account should get created')
 def account_created(context):
     expected_result = "Your Account Has Been Created!"
-    assert context.driver.find_element(By.XPATH, "//div[@id='content']/h1").text.__eq__(expected_result)
+    assert context.register_pg.status_msg_account_created(expected_result)
 
 
 @when('user enter all fields')
 def enter_all_fields(context):
-    context.driver.find_element(By.ID, "input-firstname").send_keys("Sainadh")
-    context.driver.find_element(By.ID, "input-lastname").send_keys("Reddy")
-    time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    email_id = "sainadhreddy_" + time_stamp + "@gmail.com"
-    context.driver.find_element(By.ID, "input-email").send_keys(email_id)
-    telephone_number = '9' + ''.join(str(random.randint(0, 9)) for _ in range(9))
-    context.driver.find_element(By.ID, "input-telephone").send_keys(telephone_number)
-    context.driver.find_element(By.ID, "input-password").send_keys("123456")
-    context.driver.find_element(By.ID, "input-confirm").send_keys("123456")
-    context.driver.find_element(By.XPATH, "//input[@name='newsletter' and @value='1']").click()
-    context.driver.find_element(By.NAME, "agree").click()
+    context.register_pg = RegisterPage(context.driver)
+    context.register_pg.enter_first_name(AppConfig.first_name)
+    context.register_pg.enter_last_name(AppConfig.last_name)
+    context.register_pg.enter_email(AppConfig.random_email_id)
+    context.register_pg.enter_telephone(AppConfig.random_telephone_number)
+    context.register_pg.enter_password(AppConfig.password)
+    context.register_pg.enter_confirm_password(AppConfig.password)
+    context.register_pg.clicks_on_continue_button()
+    context.register_pg.select_privacy_policy()
 
 
 @when('user enter all fields except email field')
 def enter_all_fields(context):
-    context.driver.find_element(By.ID, "input-firstname").send_keys("Sainadh")
-    context.driver.find_element(By.ID, "input-lastname").send_keys("Reddy")
-    telephone_number = '9' + ''.join(str(random.randint(0, 9)) for _ in range(9))
-    context.driver.find_element(By.ID, "input-telephone").send_keys(telephone_number)
-    context.driver.find_element(By.ID, "input-password").send_keys("123456")
-    context.driver.find_element(By.ID, "input-confirm").send_keys("123456")
-    context.driver.find_element(By.XPATH, "//input[@name='newsletter' and @value='1']").click()
-    context.driver.find_element(By.NAME, "agree").click()
+    context.register_pg = RegisterPage(context.driver)
+    context.register_pg.enter_first_name(AppConfig.first_name)
+    context.register_pg.enter_last_name(AppConfig.last_name)
+    context.register_pg.enter_telephone(AppConfig.random_telephone_number)
+    context.register_pg.enter_password(AppConfig.password)
+    context.register_pg.enter_confirm_password(AppConfig.password)
+    context.register_pg.select_news_letter()
+    context.register_pg.policy_agree_name()
 
 
 @when('user enter existing accounts email into email field')
 def enter_existing_details(context):
-    context.driver.find_element(By.ID, "input-email").send_keys("sainadhreddy@gmail.com")
+    context.register_pg.enter_email(AppConfig.email_id)
 
 
 @then('proper warning message informing about duplicate account should be displayed')
 def warning_duplicate_account(context):
     expected_warning = "Warning: E-Mail Address is already registered!"
-    assert context.driver.find_element(By.XPATH, "//div[@id='account-register']/div[1]") \
-        .text.__contains__(expected_warning)
+    assert context.register_pg.duplicate_email_warning(expected_warning)
 
 
 @when('user dont enter anything into all fields')
 def dont_enter_anything(context):
-    context.driver.find_element(By.ID, "input-firstname").send_keys("")
-    context.driver.find_element(By.ID, "input-lastname").send_keys("")
-    context.driver.find_element(By.ID, "input-email").send_keys("")
-    context.driver.find_element(By.ID, "input-telephone").send_keys("")
-    context.driver.find_element(By.ID, "input-password").send_keys("")
-    context.driver.find_element(By.ID, "input-confirm").send_keys("")
+    context.register_pg = RegisterPage(context.driver)
+    context.register_pg.enter_first_name("")
+    context.register_pg.enter_last_name("")
+    context.register_pg.enter_email("")
+    context.register_pg.enter_telephone("")
+    context.register_pg.enter_password("")
+    context.register_pg.enter_confirm_password("")
 
 
 @then('proper warning message for every mandatory fields should be displayed')

@@ -1,5 +1,4 @@
 from behave import given, when, then
-from selenium.webdriver.common.by import By
 from features.pages.home_page import HomePage
 from features.pages.search_page import SearchPage
 

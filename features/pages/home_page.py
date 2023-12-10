@@ -7,6 +7,7 @@ class HomePage:
     login_link_text = "Login"
     search_box_name = "search"
     search_btn_xpath = "//div[@id='search']//button"
+    register_link_text = "Register"
 
     def __init__(self, driver):
         self.driver = driver
@@ -26,3 +27,5 @@ class HomePage:
     def clicks_on_search(self):
         self.driver.find_element(By.XPATH, self.search_btn_xpath).click()
 
+    def select_register(self):
+        self.driver.find_element(By.LINK_TEXT, self.register_link_text).click()
