@@ -1,18 +1,7 @@
 from behave import given, when, then
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from datetime import datetime
 import random
-
-
-def before_scenario(context):
-    context.driver = webdriver.Chrome()
-    context.driver.maximize_window()
-    context.driver.get("https://tutorialsninja.com/demo/")
-
-
-def after_scenario(context):
-    context.driver.quit()
 
 
 @given('user navigated to Register page')

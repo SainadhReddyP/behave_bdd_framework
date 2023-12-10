@@ -1,20 +1,11 @@
 from behave import given, when, then
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-
-
-def before_scenario(context):
-    context.driver = webdriver.Chrome()
-    context.driver.maximize_window()
-
-
-def after_scenario(context):
-    context.driver.quit()
 
 
 @given('user navigated to Home page')
 def home_page(context):
-    context.driver.get("https://tutorialsninja.com/demo/")
+    expected_title = "Your Store"
+    assert context.driver.title.__eq__(expected_title)
 
 
 @when('user enter valid product into the search box')
