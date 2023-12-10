@@ -1,40 +1,46 @@
 from behave import given, when, then
 from selenium.webdriver.common.by import By
+from features.pages.home_page import HomePage
+from features.pages.search_page import SearchPage
 
 
 @given('user navigated to Home page')
 def home_page(context):
+    context.home_pg = HomePage(context.driver)
     expected_title = "Your Store"
-    assert context.driver.title.__eq__(expected_title)
+    assert context.home_pg.verify_home_page_title(expected_title)
 
 
 @when('user enter valid product into the search box')
 def valid_search(context):
-    context.driver.find_element(By.NAME, "search").send_keys("HP")
+    context.home_pg.enter_product_into_search_box("HP")
 
 
 @when('user clicks on search button')
 def click_search(context):
-    context.driver.find_element(By.XPATH, "//div[@id='search']//button").click()
+    context.home_pg.clicks_on_search()
 
 
 @then('valid product should get displayed in search results')
 def valid_search_result(context):
-    assert context.driver.find_element(By.LINK_TEXT, "HP LP3065").is_displayed()
+    context.search_pg = SearchPage(context.driver)
+    assert context.search_pg.display_status_of_product()
 
 
 @when('user enter invalid product into the search box')
 def invalid_search(context):
-    context.driver.find_element(By.NAME, "search").send_keys("DELL")
+    context.home_pg = HomePage(context.driver)
+    context.home_pg.enter_product_into_search_box("DELL")
 
 
 @then('proper message should be displayed in search results')
 def message_invalid_search(context):
-    expected_text = "There is no product that matches the search criteria."
-    assert context.driver.find_element(By.XPATH, "//input[@id='button-search']/following-sibling::p")\
-        .text.__eq__(expected_text)
+    expected_msg_text = "There is no product that matches the search criteria."
+    context.search_pg = SearchPage(context.driver)
+    assert context.search_pg.display_status_of_search_results(expected_msg_text)
 
 
 @when('user dont enter anything into search box')
 def empty_search(context):
-    context.driver.find_element(By.NAME, "search").send_keys("")
+    context.home_pg = HomePage(context.driver)
+    context.home_pg.enter_product_into_search_box("")
