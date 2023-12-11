@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from features.pages.search_page import SearchPage
 
 
 class HomePage:
@@ -26,6 +27,7 @@ class HomePage:
 
     def clicks_on_search(self):
         self.driver.find_element(By.XPATH, self.search_btn_xpath).click()
+        return SearchPage(self.driver)
 
     def select_register(self):
         self.driver.find_element(By.LINK_TEXT, self.register_link_text).click()
