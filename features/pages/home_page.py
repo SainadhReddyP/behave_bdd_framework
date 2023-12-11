@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from features.pages.search_page import SearchPage
+from features.pages.login_page import LoginPage
 
 
 class HomePage:
@@ -18,6 +19,7 @@ class HomePage:
 
     def select_login(self):
         self.driver.find_element(By.LINK_TEXT, self.login_link_text).click()
+        return LoginPage(self.driver)
 
     def verify_home_page_title(self, expected_title_text):
         return self.driver.title.__eq__(expected_title_text)

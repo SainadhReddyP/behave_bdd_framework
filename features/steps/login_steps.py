@@ -1,8 +1,6 @@
 from behave import given, when, then
-from datetime import datetime
 from features.pages.home_page import HomePage
-from features.pages.login_page import LoginPage
-from features.pages.account_page import AccountPage
+from configurations.app_config import AppConfig
 import random
 
 
@@ -10,33 +8,28 @@ import random
 def login_page(context):
     context.home_pg = HomePage(context.driver)
     context.home_pg.click_my_account()
-    context.home_pg.select_login()
+    context.login_pg = context.home_pg.select_login()
 
 
 @when('user entered valid credentials')
 def enter_valid_credentials(context):
-    context.login_pg = LoginPage(context.driver)
     context.login_pg.enter_credentials("sainadhreddy@gmail.com","sainadh@123")
 
 
 @when('clicks on Login button')
 def click_login(context):
-    context.login_pg.click_on_login_button()
+    context.account_pg = context.login_pg.click_on_login_button()
 
 
 @then('user should get logged in')
 def successful_login(context):
-    account_pg = AccountPage(context.driver)
-    assert account_pg.display_status_of_edit_your_account_information()
+    assert context.account_pg.display_status_of_edit_your_account_information()
 
 
 @when('user entered invalid credentials')
 def invalid_credentials(context):
-    context.login_pg = LoginPage(context.driver)
-    time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    invalid_email = "sainadhreddy_" + time_stamp + "@gmail.com"
     invalid_password = ''.join(str(random.randint(0, 9)) for i in range(8))
-    context.login_pg.enter_credentials(invalid_email, invalid_password)
+    context.login_pg.enter_credentials(AppConfig.random_email_id, invalid_password)
 
 
 @then('user should get a proper warning message')
@@ -47,19 +40,14 @@ def warning_message(context):
 
 @when('user enter valid email and invalid password')
 def valid_email_invalid_password(context):
-    context.login_pg = LoginPage(context.driver)
     context.login_pg.enter_credentials("sainadhreddy@gmail.com", "123")
 
 
 @when('user enter invalid email and valid password')
 def invalid_email_valid_password(context):
-    context.login_pg = LoginPage(context.driver)
-    time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    invalid_email = "sainadhreddy_" + time_stamp + "_@gmail.com"
-    context.login_pg.enter_credentials(invalid_email, "123456")
+    context.login_pg.enter_credentials(AppConfig.random_email_id, "123456")
 
 
 @when('user dont enter anything in email and password fields')
 def without_entering_credentials(context):
-    context.login_pg = LoginPage(context.driver)
     context.login_pg.enter_credentials("","")
