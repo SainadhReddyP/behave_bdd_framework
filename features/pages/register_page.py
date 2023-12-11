@@ -14,6 +14,12 @@ class RegisterPage:
     account_created_msg_xpath = "//div[@id='content']/h1"
     news_letter_xpath = "//input[@name='newsletter' and @value='1']"
     duplicate_email_msg_xpath = "//div[@id='account-register']/div[1]"
+    privacy_policy_warning_xpath = "//div[@id='account-register']/div[1]"
+    first_name_warning_xpath = "//input[@id='input-firstname']/following-sibling::div"
+    last_name_warning_xpath = "//input[@id='input-lastname']/following-sibling::div"
+    email_warning_xpath = "//input[@id='input-email']/following-sibling::div"
+    telephone_warning_xpath = "//input[@id='input-telephone']/following-sibling::div"
+    password_warning_xpath = "//input[@id='input-password']/following-sibling::div"
 
     def __init__(self, driver):
         self.driver = driver
@@ -26,6 +32,7 @@ class RegisterPage:
 
     def enter_email(self, email_txt):
         self.driver.find_element(By.ID, self.email_id).send_keys(email_txt)
+        print("Email id: ",email_txt)
 
     def enter_telephone(self, telephone_number):
         self.driver.find_element(By.ID, self.telephone_id).send_keys(telephone_number)
@@ -43,7 +50,7 @@ class RegisterPage:
         self.driver.find_element(By.XPATH, self.continue_btn_xpath).click()
 
     def status_msg_account_created(self, expected_result_msg_txt):
-        self.driver.find_element(By.XPATH, self.account_created_msg_xpath)\
+        return self.driver.find_element(By.XPATH, self.account_created_msg_xpath)\
             .text.__eq__(expected_result_msg_txt)
 
     def select_news_letter(self):
@@ -53,4 +60,18 @@ class RegisterPage:
         return self.driver.find_element(By.XPATH, self.duplicate_email_msg_xpath) \
             .text.__contains__(expected_warning_text)
 
-    def mandatory_fiels_warning_msgs(self):
+    def privacy_policy_warning(self, expected_warning_text):
+        return self.driver.find_element(By.XPATH, self.privacy_policy_warning_xpath) \
+            .text.__contains__(expected_warning_text)
+
+    def display_status_of_warnings(self, fname_warning, lname_warning, email_warning, tel_warning, pwd_warning):
+        fname_status = self.driver.find_element(By.XPATH, self.first_name_warning_xpath).text.__eq__(fname_warning)
+        lname_status = self.driver.find_element(By.XPATH, self.last_name_warning_xpath).text.__eq__(lname_warning)
+        email_status = self.driver.find_element(By.XPATH, self.email_warning_xpath).text.__eq__(email_warning)
+        tel_status = self.driver.find_element(By.XPATH, self.telephone_warning_xpath).text.__eq__(tel_warning)
+        pwd_status = self.driver.find_element(By.XPATH, self.password_warning_xpath).text.__eq__(pwd_warning)
+
+        return fname_status, lname_status, email_status, tel_status, pwd_status
+
+
+

@@ -42,16 +42,19 @@ def enter_all_fields(context):
     context.register_pg = RegisterPage(context.driver)
     context.register_pg.enter_first_name(AppConfig.first_name)
     context.register_pg.enter_last_name(AppConfig.last_name)
-    context.register_pg.enter_email(AppConfig.random_email_id)
+    time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    random_email_id = "sainadhreddy_" + time_stamp + "@gmail.com"
+    context.register_pg.enter_email(random_email_id)
     context.register_pg.enter_telephone(AppConfig.random_telephone_number)
     context.register_pg.enter_password(AppConfig.password)
     context.register_pg.enter_confirm_password(AppConfig.password)
     context.register_pg.clicks_on_continue_button()
+    context.register_pg.select_news_letter()
     context.register_pg.select_privacy_policy()
 
 
 @when('user enter all fields except email field')
-def enter_all_fields(context):
+def enter_all_fields_except_email(context):
     context.register_pg = RegisterPage(context.driver)
     context.register_pg.enter_first_name(AppConfig.first_name)
     context.register_pg.enter_last_name(AppConfig.last_name)
@@ -59,7 +62,7 @@ def enter_all_fields(context):
     context.register_pg.enter_password(AppConfig.password)
     context.register_pg.enter_confirm_password(AppConfig.password)
     context.register_pg.select_news_letter()
-    context.register_pg.policy_agree_name()
+    context.register_pg.select_privacy_policy()
 
 
 @when('user enter existing accounts email into email field')
@@ -92,23 +95,9 @@ def mandatory_fields_warning_message(context):
     expected_email_warning = "E-Mail Address does not appear to be valid!"
     expected_telephone_warning = "Telephone must be between 3 and 32 characters!"
     expected_password_warning = "Password must be between 4 and 20 characters!"
-    assert context.driver.find_element(By.XPATH, "//div[@id='account-register']/div[1]")\
-        .text.__contains__(expected_privacy_warning)
 
-    assert context.driver.find_element(By.XPATH, "//input[@id='input-firstname']/following-sibling::div") \
-        .text.__contains__(expected_fname_warning)
+    assert context.register_pg.privacy_policy_warning(expected_privacy_warning)
+    assert context.register_pg.display_status_of_warnings(expected_fname_warning, expected_lname_warning,
+                                                          expected_email_warning, expected_telephone_warning,
+                                                          expected_password_warning)
 
-    assert context.driver.find_element(By.XPATH, "//input[@id='input-firstname']/following-sibling::div") \
-        .text.__eq__(expected_fname_warning)
-
-    assert context.driver.find_element(By.XPATH, "//input[@id='input-lastname']/following-sibling::div") \
-        .text.__eq__(expected_lname_warning)
-
-    assert context.driver.find_element(By.XPATH, "//input[@id='input-email']/following-sibling::div") \
-        .text.__eq__(expected_email_warning)
-
-    assert context.driver.find_element(By.XPATH, "//input[@id='input-telephone']/following-sibling::div") \
-        .text.__eq__(expected_telephone_warning)
-
-    assert context.driver.find_element(By.XPATH, "//input[@id='input-password']/following-sibling::div") \
-        .text.__eq__(expected_password_warning)

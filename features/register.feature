@@ -6,12 +6,6 @@ Feature: Register account functionality
     And clicks on continue button
     Then account should get created
 
-  Scenario: Register with all fields
-    Given user navigated to Register page
-    When user enter all fields
-    And clicks on continue button
-    Then account should get created
-
   Scenario: Register with a duplicate email address
     Given user navigated to Register page
     When user enter all fields except email field
@@ -24,3 +18,9 @@ Feature: Register account functionality
     When user dont enter anything into all fields
     And clicks on continue button
     Then proper warning message for every mandatory fields should be displayed
+
+  Scenario: Register with all fields
+    Given user navigated to Register page
+    When user enter all fields
+    And clicks on continue button
+    Then account should get created
