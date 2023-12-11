@@ -1,7 +1,8 @@
 from selenium.webdriver.common.by import By
+from features.pages.base_page import BasePage
 
 
-class RegisterPage:
+class RegisterPage(BasePage):
     # Register Page Locators
     fname_id = "input-firstname"
     lname_id = "input-lastname"
@@ -22,7 +23,7 @@ class RegisterPage:
     password_warning_xpath = "//input[@id='input-password']/following-sibling::div"
 
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
     def enter_first_name(self, first_name_txt):
         self.driver.find_element(By.ID, self.fname_id).send_keys(first_name_txt)

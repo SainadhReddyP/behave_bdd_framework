@@ -1,8 +1,9 @@
 from selenium.webdriver.common.by import By
 from features.pages.account_page import AccountPage
+from features.pages.base_page import BasePage
 
 
-class LoginPage:
+class LoginPage(BasePage):
     # Login Page Locators
     email_address_id = "input-email"
     password_id = "input-password"
@@ -10,7 +11,7 @@ class LoginPage:
     warning_message_xpath = "//div[@id='account-login']/div[1]"
 
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
     def enter_credentials(self, email, password):
         self.driver.find_element(By.ID, self.email_address_id).send_keys(email)

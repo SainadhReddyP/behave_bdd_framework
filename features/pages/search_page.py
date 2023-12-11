@@ -1,13 +1,14 @@
 from selenium.webdriver.common.by import By
+from features.pages.base_page import BasePage
 
 
-class SearchPage:
+class SearchPage(BasePage):
     # Search Page Locators
     hp_product_link_txt = "HP LP3065"
     msg_xpath = "//input[@id='button-search']/following-sibling::p"
 
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
     def display_status_of_product(self):
         return self.driver.find_element(By.LINK_TEXT, self.hp_product_link_txt).is_displayed()
