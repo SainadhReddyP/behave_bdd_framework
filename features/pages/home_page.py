@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from features.pages.search_page import SearchPage
 from features.pages.login_page import LoginPage
+from features.pages.register_page import RegisterPage
 
 
 class HomePage:
@@ -33,3 +34,4 @@ class HomePage:
 
     def select_register(self):
         self.driver.find_element(By.LINK_TEXT, self.register_link_text).click()
+        return RegisterPage(self.driver)

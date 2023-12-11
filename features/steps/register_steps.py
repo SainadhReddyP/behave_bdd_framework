@@ -1,22 +1,19 @@
 from behave import given, when, then
-from selenium.webdriver.common.by import By
 from datetime import datetime
 from features.pages.home_page import HomePage
 from features.pages.register_page import RegisterPage
 from configurations.app_config import AppConfig
-import random
 
 
 @given('user navigated to Register page')
 def launch_register_page(context):
     context.home_pg = HomePage(context.driver)
     context.home_pg.click_my_account()
-    context.home_pg.select_register()
+    context.register_pg = context.home_pg.select_register()
 
 
 @when('user enter mandatory fields')
 def enter_mandatory(context):
-    context.register_pg = RegisterPage(context.driver)
     context.register_pg.enter_first_name(AppConfig.first_name)
     context.register_pg.enter_last_name(AppConfig.last_name)
     context.register_pg.enter_email(AppConfig.random_email_id)
@@ -39,7 +36,6 @@ def account_created(context):
 
 @when('user enter all fields')
 def enter_all_fields(context):
-    context.register_pg = RegisterPage(context.driver)
     context.register_pg.enter_first_name(AppConfig.first_name)
     context.register_pg.enter_last_name(AppConfig.last_name)
     time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -55,7 +51,6 @@ def enter_all_fields(context):
 
 @when('user enter all fields except email field')
 def enter_all_fields_except_email(context):
-    context.register_pg = RegisterPage(context.driver)
     context.register_pg.enter_first_name(AppConfig.first_name)
     context.register_pg.enter_last_name(AppConfig.last_name)
     context.register_pg.enter_telephone(AppConfig.random_telephone_number)
