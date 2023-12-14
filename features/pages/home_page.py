@@ -24,10 +24,10 @@ class HomePage(BasePage):
         return LoginPage(self.driver)
 
     def verify_home_page_title(self, expected_title_text):
-        return self.driver.title.__eq__(expected_title_text)
+        return self.verify_page_title(expected_title_text)
 
     def enter_product_into_search_box(self, product_text):
-        self.driver.find_element(By.NAME, self.search_box_name).send_keys(product_text)
+        self.set_text("search_box_name", self.search_box_name, product_text)
 
     def clicks_on_search(self):
         self.click_on_element("search_btn_xpath", self.search_btn_xpath)
