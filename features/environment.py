@@ -1,5 +1,7 @@
 from selenium import webdriver
 from utilities import ConfigReader
+import allure
+from allure_commons.types import AttachmentType
 
 
 def before_scenario(context, driver):
@@ -17,3 +19,9 @@ def before_scenario(context, driver):
 
 def after_scenario(context, driver):
     context.driver.quit()
+
+
+def after_step(context, step):
+    if step.status == 'failed':
+        allure.attach(context.driver.get_screenshot_as_png(),
+                      name=step.name, attachment_type=AttachmentType.PNG)
