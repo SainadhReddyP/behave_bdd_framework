@@ -12,15 +12,18 @@ def launch_register_page(context):
     context.register_pg = context.home_pg.select_register()
 
 
-@when('user enter mandatory fields')
+@when('user enter below details into mandatory fields')
 def enter_mandatory(context):
-    context.register_pg.enter_first_name(AppConfig.first_name)
-    context.register_pg.enter_last_name(AppConfig.last_name)
-    context.register_pg.enter_email(AppConfig.random_email_id)
-    context.register_pg.enter_telephone(AppConfig.random_telephone_number)
-    context.register_pg.enter_password(AppConfig.password)
-    context.register_pg.enter_confirm_password(AppConfig.password)
-    context.register_pg.select_privacy_policy()
+    for row in context.table:
+        context.register_pg.enter_first_name(row['first_name'])
+        context.register_pg.enter_last_name(row['last_name'])
+        time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        random_email_id = "sainadhreddy_" + time_stamp + "@gmail.com"
+        context.register_pg.enter_email(random_email_id)
+        context.register_pg.enter_telephone(row['telephone'])
+        context.register_pg.enter_password(row['password'])
+        context.register_pg.enter_confirm_password(row['password'])
+        context.register_pg.select_privacy_policy()
 
 
 @when('clicks on continue button')
