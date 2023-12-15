@@ -2,7 +2,7 @@ Feature: Login functionality
 
   Scenario: Login with valid credentials
     Given user navigated to Login page
-    When user entered valid credentials
+    When user entered valid credentials "sainadhreddy@gmail.com" and "sainadh@123"
     And clicks on Login button
     Then user should get logged in
 

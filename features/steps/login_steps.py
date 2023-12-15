@@ -11,9 +11,9 @@ def login_page(context):
     context.login_pg = context.home_pg.select_login()
 
 
-@when('user entered valid credentials')
-def enter_valid_credentials(context):
-    context.login_pg.enter_credentials("sainadhreddy@gmail.com","sainadh@123")
+@when('user entered valid credentials "{email}" and "{password}"')
+def enter_valid_credentials(context, email, password):
+    context.login_pg.enter_credentials(email, password)
 
 
 @when('clicks on Login button')
