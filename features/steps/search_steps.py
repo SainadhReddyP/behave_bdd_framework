@@ -32,8 +32,7 @@ def invalid_search(context, product_name):
 
 @then('proper message should be displayed in search results')
 def message_invalid_search(context):
-    # expected_msg_text = "There is no product that matches the search criteria."
-    expected_msg_text = "There is no that matches the search criteria."
+    expected_msg_text = "There is no product that matches the search criteria."
     assert context.search_pg.display_status_of_search_results(expected_msg_text)
 
 
