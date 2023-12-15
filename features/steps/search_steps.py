@@ -10,9 +10,9 @@ def home_page(context):
     assert context.home_pg.verify_home_page_title(expected_title)
 
 
-@when('user enter valid product into the search box')
-def valid_search(context):
-    context.home_pg.enter_product_into_search_box("HP")
+@when('user enter valid product say "{product_name}" into the search box')
+def valid_search(context, product_name):
+    context.home_pg.enter_product_into_search_box(product_name)
 
 
 @when('user clicks on search button')
@@ -25,9 +25,9 @@ def valid_search_result(context):
     assert context.search_pg.display_status_of_product()
 
 
-@when('user enter invalid product into the search box')
-def invalid_search(context):
-    context.home_pg.enter_product_into_search_box("DELL")
+@when('user enter invalid product say "{product_name}" into the search box')
+def invalid_search(context, product_name):
+    context.home_pg.enter_product_into_search_box(product_name)
 
 
 @then('proper message should be displayed in search results')
