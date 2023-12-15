@@ -1,6 +1,6 @@
 from behave import given, when, then
 from features.pages.home_page import HomePage
-from configurations.app_config import AppConfig
+from utilities import generate_email
 import random
 
 
@@ -29,7 +29,8 @@ def successful_login(context):
 @when('user entered invalid credentials')
 def invalid_credentials(context):
     invalid_password = ''.join(str(random.randint(0, 9)) for i in range(8))
-    context.login_pg.enter_credentials(AppConfig.random_email_id, invalid_password)
+    email_id = generate_email.get_new_email()
+    context.login_pg.enter_credentials(email_id, invalid_password)
 
 
 @then('user should get a proper warning message')
@@ -45,7 +46,8 @@ def valid_email_invalid_password(context):
 
 @when('user enter invalid email and valid password')
 def invalid_email_valid_password(context):
-    context.login_pg.enter_credentials(AppConfig.random_email_id, "123456")
+    email_id = generate_email.get_new_email()
+    context.login_pg.enter_credentials(email_id, "123456")
 
 
 @when('user dont enter anything in email and password fields')

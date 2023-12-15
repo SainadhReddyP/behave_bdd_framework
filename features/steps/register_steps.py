@@ -3,6 +3,7 @@ from datetime import datetime
 from features.pages.home_page import HomePage
 from features.pages.register_page import RegisterPage
 from configurations.app_config import AppConfig
+from utilities import generate_email
 
 
 @given('user navigated to Register page')
@@ -17,9 +18,8 @@ def enter_mandatory(context):
     for row in context.table:
         context.register_pg.enter_first_name(row['first_name'])
         context.register_pg.enter_last_name(row['last_name'])
-        time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        random_email_id = "sainadhreddy_" + time_stamp + "@gmail.com"
-        context.register_pg.enter_email(random_email_id)
+        email_id = generate_email.get_new_email()
+        context.register_pg.enter_email(email_id)
         context.register_pg.enter_telephone(row['telephone'])
         context.register_pg.enter_password(row['password'])
         context.register_pg.enter_confirm_password(row['password'])
@@ -41,9 +41,8 @@ def account_created(context):
 def enter_all_fields(context):
     context.register_pg.enter_first_name(AppConfig.first_name)
     context.register_pg.enter_last_name(AppConfig.last_name)
-    time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    random_email_id = "sainadhreddy_" + time_stamp + "@gmail.com"
-    context.register_pg.enter_email(random_email_id)
+    email_id = generate_email.get_new_email()
+    context.register_pg.enter_email(email_id)
     context.register_pg.enter_telephone(AppConfig.random_telephone_number)
     context.register_pg.enter_password(AppConfig.password)
     context.register_pg.enter_confirm_password(AppConfig.password)
